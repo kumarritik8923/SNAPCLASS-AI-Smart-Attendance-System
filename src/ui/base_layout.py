@@ -59,7 +59,7 @@ def style_base_layout():
                 }
                 button{
                     border-radius: 1.5rem !important;
-                    background: #5865F2 !important;
+                    background-color: #5865F2 !important;
                     color: white !important;
                     padding: 10px 20px !important;
                     border: none !important;
@@ -67,7 +67,7 @@ def style_base_layout():
                 }
                 button[kind="secondary"]{
                     border-radius: 1.5rem !important;
-                    background: #EB459E !important;
+                    background-color: #EB459E !important;
                     color: white !important;
                     padding: 10px 20px !important;
                     border: none !important;
@@ -75,7 +75,7 @@ def style_base_layout():
                 }
                 button[kind="tertiary"]{
                     border-radius: 1.5rem !important;
-                    background: black !important;
+                    background-color: black !important;
                     color: white !important;
                     padding: 10px 20px !important;
                     border: none !important;
@@ -83,6 +83,34 @@ def style_base_layout():
                 }
                 button:hover{
                     transform :scale(1.05)}
+
+                /* --- FINAL INPUT FIELD CHANGES --- */
+                
+                /* 1. Makes the 'Enter username' and 'Enter password' text black */
+                .stTextInput label p {
+                    color: black !important;
+                }
+
+                /* 2. Makes the wrapper white, removes the black border, and removes focus shadows */
+                .stTextInput div[data-baseweb="base-input"] {
+                    background-color: white !important;
+                    border: none !important;          /* Removes the physical black border */
+                    box-shadow: none !important;      /* Removes the glowing border when clicked */
+                    border-radius: 0.5rem !important; 
+                }
+                
+                /* 3. Forces the password eye-icon container to also be white */
+                .stTextInput div[data-baseweb="base-input"] > div {
+                    background-color: transparent !important; /* Lets the parent's white background show through */
+                }
+                
+                /* 4. Makes the text black and ensures the inner input background is white */
+                .stTextInput input {
+                    color: black !important;
+                    background-color: white !important;
+                    -webkit-text-fill-color: black !important;
+                }
+                
         </style>
                 
         """,unsafe_allow_html=True)
