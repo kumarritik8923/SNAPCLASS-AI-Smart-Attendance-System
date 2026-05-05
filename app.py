@@ -25,6 +25,6 @@ def main():
             st.session_state.login_type = 'student'
             st.rerun()
         if st.session_state.get('is_logged_in') and st.session_state.get('user_role') == 'student':
-            auto_enroll_dialog(join)
+            auto_enroll_dialog(join_code)
 
 main()
