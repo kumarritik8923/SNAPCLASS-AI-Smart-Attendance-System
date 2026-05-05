@@ -85,42 +85,46 @@ def student_dashboard():
 
 
 def student_screen():
+
+
     style_background_dashboard()
     style_base_layout()
-    
+
+
     if "student_data" in st.session_state:
         student_dashboard()
         return
-
-    c1,c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
+    
+    c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
     with c1:
         header_dashboard()
     with c2:
-        if st.button("Go back to Home",type='secondary',key='loginbackbtn',shortcut='control+backspace'):
+        if st.button("Go back to Home", type='secondary', key='loginbackbtn', shortcut="control+backspace"):
             st.session_state['login_type'] = None
             st.rerun()
-    
-    st.header('Login using FaceID',text_alignment='center')
+
+    st.header('Login using FaceID', text_alignment='center')
     st.space()
     st.space()
     
     show_registration = False
     photo_source = st.camera_input("Position your face in the center")
+
     if photo_source:
         img = np.array(Image.open(photo_source))
-    
+
         with st.spinner('AI is scanning..'):
             detected, all_ids, num_faces = predict_attendance(img)
 
             if num_faces == 0:
                 st.warning('Face not found!')
-            elif num_faces > 1:
+            elif num_faces >1:
                 st.warning('Multiple faces found')
             else:
                 if detected:
                     student_id = list(detected.keys())[0]
                     all_students = get_all_students()
-                    student = next((s for s in all_students if s['student_id']==student_id),None)
+                    student = next((s for s in all_students if s['student_id']==student_id), None)
 
                     if student:
                         st.session_state.is_logged_in = True
@@ -132,29 +136,31 @@ def student_screen():
                 else:
                     st.info('Face not recognized! You might be a new student!')
                     show_registration = True
-
+    
     if show_registration:
         with st.container(border=True):
             st.header('Register new Profile')
-            new_name = st.text_input("Enter your name",placeholder='E.g. Hamza Rizvi')
+            new_name = st.text_input("Enter your name", placeholder='E.g. Hamza Rizvi')
 
             st.subheader('Optional : Voice Enrollment')
-            st.info("Enroll your voice only attendance")
+            st.info("Enroll your for voice only attendance")
+
 
             audio_data = None
 
             try:
-                audio_data = st.audio_input('Record a short phrase like I am present, My name is Ritik.')
+                audio_data = st.audio_input('Record a short phrase like I am present, My name is Akash.')
             except Exception:
                 st.error('Audio Data failed!')
 
-            if st.button('Create Account',type='primary'):
+            if st.button('Create Account', type='primary'):
                 if new_name:
                     with st.spinner('Creating profile..'):
                         img = np.array(Image.open(photo_source))
-                        encoding = get_face_embeddings(img)
-                        if encoding:
-                            face_emb = encoding[0].tolist()
+                        encodings= get_face_embeddings(img)
+                        if encodings:
+                            face_emb = encodings[0].tolist()
+
                             voice_emb = None
                             if audio_data:
                                 voice_emb = get_voice_embedding(audio_data.read())
@@ -170,9 +176,11 @@ def student_screen():
                                 time.sleep(1)
                                 st.rerun()
                         else:
-                            st.error("Could n't capture your facial features for registrations")
+                            st.error('Couldnt capture your facial features for registration')
+
                 else:
                     st.warning('Please enter your name!')
 
 
+        
     footer_dashboard()
